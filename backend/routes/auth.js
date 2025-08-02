@@ -8,21 +8,21 @@ const users = [
   {
     id: 1,
     username: 'junior_user',
-    password: '$2a$10$XQqKV8.YKpFGHZlVeiPAOu7Jf8QLwzF8cKZU8XrtOOJ5xZ0n0W/8W', // password: junior123
+    password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
     role: 'Junior Staff',
     department: 'Finance'
   },
   {
     id: 2,
     username: 'intermediate_user',
-    password: '$2a$10$XQqKV8.YKpFGHZlVeiPAOu7Jf8QLwzF8cKZU8XrtOOJ5xZ0n0W/8W', // password: junior123
+    password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
     role: 'Intermediate Staff',
     department: 'Sales'
   },
   {
     id: 3,
     username: 'department_head',
-    password: '$2a$10$XQqKV8.YKpFGHZlVeiPAOu7Jf8QLwzF8cKZU8XrtOOJ5xZ0n0W/8W', // password: junior123
+    password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: password
     role: 'Departmental Head',
     department: 'Management'
   }
