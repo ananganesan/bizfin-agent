@@ -15,7 +15,7 @@ APP_NAME="bizfin-agent"
 APP_DIR="/var/www/bizfin-agent"
 DOMAIN="bizfin.texra.in"
 PORT="3005"
-REPO_URL="https://github.com/yourusername/bizfin-agent.git"  # UPDATE THIS
+REPO_URL="https://github.com/ananganesan/bizfin-agent.git"
 
 echo -e "${BLUE}===========================================${NC}"
 echo -e "${BLUE}    BIZFIN-AGENT DEPLOYMENT${NC}"
