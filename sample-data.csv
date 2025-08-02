@@ -1,0 +1,13 @@
+Department,Revenue,Expenses,Profit,Month
+Sales,150000,120000,30000,January
+Finance,50000,45000,5000,January
+Production,80000,70000,10000,January
+Materials,40000,35000,5000,January
+Sales,165000,125000,40000,February
+Finance,52000,47000,5000,February
+Production,85000,72000,13000,February
+Materials,42000,36000,6000,February
+Sales,180000,130000,50000,March
+Finance,55000,48000,7000,March
+Production,90000,75000,15000,March
+Materials,45000,38000,7000,March

@@ -1,0 +1,81 @@
+name: Deploy to Texra Server
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        cd backend && npm install
+        cd ../frontend && npm install
+        
+    - name: Create production env file
+      run: |
+        cat > backend/.env << EOF
+        PORT=3005
+        NODE_ENV=production  
+        ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+        JWT_SECRET=${{ secrets.JWT_SECRET }}
+        UPLOAD_DIR=./uploads
+        MAX_FILE_SIZE=10485760
+        CORS_ORIGIN=https://bizfin.texra.in
+        EOF
+        
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          # Navigate to app directory
+          cd /var/www/bizfin-agent || { echo "App directory not found"; exit 1; }
+          
+          # Pull latest changes
+          git pull origin main
+          
+          # Install dependencies
+          cd backend && npm install --production
+          cd ../frontend && npm install --production
+          cd ..
+          
+          # Create uploads directory
+          mkdir -p backend/uploads
+          chmod 755 backend/uploads
+          
+          # Create production env file
+          cat > backend/.env << EOF
+          PORT=3005
+          NODE_ENV=production
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          UPLOAD_DIR=./uploads
+          MAX_FILE_SIZE=10485760
+          CORS_ORIGIN=https://bizfin.texra.in
+          EOF
+          
+          # Restart the application using PM2
+          pm2 restart bizfin-agent || pm2 start backend/server.js --name bizfin-agent
+          
+          # Update nginx configuration
+          sudo cp deploy/nginx.conf /etc/nginx/sites-available/bizfin.texra.in
+          sudo ln -sf /etc/nginx/sites-available/bizfin.texra.in /etc/nginx/sites-enabled/
+          sudo nginx -t && sudo systemctl reload nginx
+          
+          echo "Deployment completed successfully!"

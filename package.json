@@ -1,0 +1,16 @@
+{
+  "name": "bizfin-agent",
+  "version": "1.0.0",
+  "description": "Business Finance Advisory Agent",
+  "scripts": {
+    "install-deps": "cd backend && npm install && cd ../frontend && npm install",
+    "start-backend": "cd backend && npm start",
+    "start-frontend": "cd frontend && npm start",
+    "dev-backend": "cd backend && npm run dev",
+    "dev": "concurrently \"npm run dev-backend\" \"npm run start-frontend\"",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

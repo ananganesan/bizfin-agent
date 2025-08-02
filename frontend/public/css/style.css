@@ -1,0 +1,363 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* Login Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-box h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #667eea;
+}
+
+.login-box h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #5a67d8;
+}
+
+.error-message {
+    color: #e53e3e;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.demo-users {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.demo-users h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.demo-users ul {
+    list-style: none;
+}
+
+.demo-users li {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.demo-users code {
+    background: #f7fafc;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+/* Main App Styles */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-header {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header h1 {
+    font-size: 24px;
+    color: #667eea;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-role {
+    background: #667eea;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.logout-btn {
+    background: #e53e3e;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 300px;
+    background: white;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid #e2e8f0;
+}
+
+.upload-section {
+    margin-bottom: 30px;
+}
+
+.upload-section h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+#fileInput {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#uploadStatus {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.role-capabilities {
+    margin-bottom: 30px;
+}
+
+.role-capabilities h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+#capabilities {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.tools-section h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+#toolsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tool-chip {
+    background: #f7fafc;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #f7fafc;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message.user .message-content {
+    background: #667eea;
+    color: white;
+}
+
+.message-role {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 4px;
+}
+
+.chat-input-container {
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    resize: none;
+    font-family: inherit;
+}
+
+.btn-send {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-send:hover {
+    background: #5a67d8;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+#reportContent {
+    margin: 20px 0;
+    white-space: pre-wrap;
+    font-family: monospace;
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.insights-list {
+    background: #eff6ff;
+    border-left: 4px solid #667eea;
+    padding: 10px 15px;
+    margin: 10px 0;
+}
+
+.insights-list h4 {
+    margin-bottom: 8px;
+}
+
+.insights-list ul {
+    list-style: none;
+}
+
+.insights-list li {
+    margin-bottom: 4px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.insights-list li:before {
+    content: "•";
+    color: #667eea;
+    font-weight: bold;
+    position: absolute;
+    left: 8px;
+}

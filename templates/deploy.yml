@@ -1,0 +1,96 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: {{SERVER.host}}
+        username: {{SERVER.ssh_user}}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          # Create app directory if it doesn't exist
+          mkdir -p {{SERVER.app_directory}}
+          
+          # Remove existing git directory to start fresh
+          cd {{SERVER.app_directory}}
+          rm -rf .git
+          
+          # Clone the repository directly
+          cd /apps
+          rm -rf {{APP_NAME}}-temp
+          git clone https://github.com/{{GITHUB.username}}/{{GITHUB.repository}}.git {{APP_NAME}}-temp
+          
+          # Copy files to the app directory
+          rsync -av --delete --exclude='.git' --exclude='node_modules' {{APP_NAME}}-temp/ {{SERVER.app_directory}}/
+          
+          # Clean up temp directory
+          rm -rf {{APP_NAME}}-temp
+          
+          # Install dependencies
+          cd {{SERVER.app_directory}}
+          npm install --production
+          
+          # Create/update environment file
+          cat > .env << EOF
+          NODE_ENV={{ENVIRONMENT.NODE_ENV}}
+          PORT={{APP_PORT}}
+          SESSION_SECRET={{ENVIRONMENT.SESSION_SECRET}}
+          AUTH_USERNAME={{ENVIRONMENT.AUTH_USERNAME}}
+          AUTH_PASSWORD={{ENVIRONMENT.AUTH_PASSWORD}}
+          EOF
+          
+          # Update nginx configuration
+          cat > /tmp/{{APP_NAME}}-nginx.conf << 'EOF'
+          # {{APP_NAME}} subdomain
+          server {
+              listen 443 ssl http2;
+              listen [::]:443 ssl http2;
+              server_name {{APP_SUBDOMAIN}}.{{DOMAIN.base}};
+              
+              ssl_certificate /etc/letsencrypt/live/{{DOMAIN.base}}/fullchain.pem;
+              ssl_certificate_key /etc/letsencrypt/live/{{DOMAIN.base}}/privkey.pem;
+              ssl_protocols TLSv1.2 TLSv1.3;
+              ssl_ciphers HIGH:!aNULL:!MD5;
+              
+              location / {
+                  proxy_pass http://localhost:{{APP_PORT}};
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection 'upgrade';
+                  proxy_set_header Host $host;
+                  proxy_cache_bypass $http_upgrade;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+              }
+          }
+          EOF
+          
+          # Add nginx config if not already present
+          if ! grep -q "{{APP_SUBDOMAIN}}.{{DOMAIN.base}}" /etc/nginx/sites-available/texra; then
+              echo "" >> /etc/nginx/sites-available/texra
+              cat /tmp/{{APP_NAME}}-nginx.conf >> /etc/nginx/sites-available/texra
+              nginx -t && nginx -s reload
+          fi
+          
+          # Start or restart the application
+          if pm2 describe {{SERVER.pm2_name}} > /dev/null 2>&1; then
+              pm2 restart {{SERVER.pm2_name}} --update-env
+          else
+              pm2 start server.js --name {{SERVER.pm2_name}}
+              pm2 save
+          fi
+          
+          # Health check
+          sleep 5
+          curl -f http://localhost:{{APP_PORT}}/health || curl -f http://localhost:{{APP_PORT}}/ || echo "Warning: Health check failed"

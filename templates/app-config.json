@@ -1,0 +1,33 @@
+{
+  "APP_NAME": "my-new-app",
+  "APP_DESCRIPTION": "Description of my new application",
+  "APP_SUBDOMAIN": "app2",
+  "APP_PORT": 3001,
+  "APP_TYPE": "node",
+  "FEATURES": {
+    "authentication": false,
+    "database": "none",
+    "ai_integration": false,
+    "pwa": false
+  },
+  "GITHUB": {
+    "username": "your-github-username",
+    "repository": "my-new-app"
+  },
+  "DOMAIN": {
+    "base": "texra.in",
+    "full_url": "https://app2.texra.in"
+  },
+  "SERVER": {
+    "host": "37.27.216.55",
+    "ssh_user": "root",
+    "app_directory": "/apps/my-new-app",
+    "pm2_name": "my-new-app"
+  },
+  "ENVIRONMENT": {
+    "NODE_ENV": "production",
+    "SESSION_SECRET": "change-this-secret-key-in-production",
+    "AUTH_USERNAME": "admin",
+    "AUTH_PASSWORD": "change-this-password"
+  }
+}

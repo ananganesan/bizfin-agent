@@ -1,0 +1,28 @@
+{
+  "name": "bizfin-agent",
+  "port": 3005,
+  "description": "Business Finance Advisory Agent - AI-powered financial analysis with role-based access",
+  "domain": "bizfin.texra.in",
+  "type": "node",
+  "main": "backend/server.js",
+  "build": {
+    "install": "npm run install-deps",
+    "command": "echo 'No build step required for this Node.js app'"
+  },
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3005",
+    "CORS_ORIGIN": "https://bizfin.texra.in"
+  },
+  "healthcheck": {
+    "path": "/health",
+    "timeout": 10
+  },
+  "nginx": {
+    "static": "frontend/public",
+    "api_proxy": "/api"
+  },
+  "dependencies": {
+    "node": "18.x"
+  }
+}

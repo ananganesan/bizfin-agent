@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Finance Advisory Agent</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1>Business Finance Advisory Agent</h1>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+                <div id="loginError" class="error-message"></div>
+            </form>
+            
+            <div class="demo-users">
+                <h3>Demo Users:</h3>
+                <ul>
+                    <li>Junior Staff: <code>junior_user</code> / <code>junior123</code></li>
+                    <li>Intermediate Staff: <code>intermediate_user</code> / <code>junior123</code></li>
+                    <li>Department Head: <code>department_head</code> / <code>junior123</code></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/login.js"></script>
+</body>
+</html>

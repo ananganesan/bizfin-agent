@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Finance Advisory Agent</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Business Finance Advisory Agent</h1>
+            <div class="user-info">
+                <span id="username"></span>
+                <span id="userRole" class="user-role"></span>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="sidebar">
+                <div class="upload-section">
+                    <h3>Upload Financial Data</h3>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv,.pdf" />
+                    <button id="uploadBtn" class="btn-primary">Upload & Analyze</button>
+                    <div id="uploadStatus"></div>
+                </div>
+
+                <div class="role-capabilities">
+                    <h3>Your Capabilities</h3>
+                    <div id="capabilities"></div>
+                </div>
+
+                <div class="tools-section">
+                    <h3>Available Tools</h3>
+                    <div id="toolsList"></div>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-container">
+                    <textarea 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Ask questions about your financial data..."
+                        rows="3"
+                    ></textarea>
+                    <button id="sendBtn" class="btn-send">Send</button>
+                </div>
+            </div>
+        </main>
+
+        <div id="reportModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Financial Analysis Report</h2>
+                <div id="reportContent"></div>
+                <button id="downloadReport" class="btn-primary">Download Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
