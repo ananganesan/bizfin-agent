@@ -44,10 +44,12 @@ jobs:
         key: ${{ secrets.DEPLOY_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          # Navigate to app directory
-          cd /var/www/bizfin-agent || { echo "App directory not found"; exit 1; }
+          # Clone or update repository
+          if [ ! -d "/var/www/bizfin-agent/.git" ]; then
+            git clone https://github.com/ananganesan/bizfin-agent.git /var/www/bizfin-agent
+          fi
           
-          # Pull latest changes
+          cd /var/www/bizfin-agent
           git pull origin main
           
           # Install dependencies
