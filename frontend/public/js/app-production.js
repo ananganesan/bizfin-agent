@@ -26,6 +26,11 @@ window.addEventListener('load', async () => {
         
         const data = await response.json();
         currentUser = data.user;
+        
+        // Hide loading screen and show app
+        document.getElementById('authLoading').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+        
         updateUI();
         loadCapabilities();
     } catch (error) {
