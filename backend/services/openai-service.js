@@ -29,7 +29,7 @@ Please provide analysis appropriate for a ${userRole} level user. Include specif
 
     try {
       const response = await this.client.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -55,7 +55,14 @@ Please provide analysis appropriate for a ${userRole} level user. Include specif
       };
     } catch (error) {
       console.error('OpenAI Error:', error);
-      throw new Error('AI analysis failed');
+      if (error.code === 'invalid_api_key') {
+        throw new Error('OpenAI API key is invalid or missing');
+      } else if (error.status === 401) {
+        throw new Error('OpenAI API authentication failed');
+      } else if (error.status === 429) {
+        throw new Error('OpenAI API rate limit exceeded');
+      }
+      throw new Error(`AI analysis failed: ${error.message}`);
     }
   }
 
@@ -101,7 +108,7 @@ Format as a professional financial report.`;
 
     try {
       const response = await this.client.chat.completions.create({
-        model: 'gpt-4-turbo-preview',
+        model: 'gpt-4o-mini',
         messages: [
           {
             role: 'system',
@@ -119,7 +126,12 @@ Format as a professional financial report.`;
       return response.choices[0].message.content;
     } catch (error) {
       console.error('Report generation error:', error);
-      throw new Error('Report generation failed');
+      if (error.code === 'invalid_api_key') {
+        throw new Error('OpenAI API key is invalid or missing');
+      } else if (error.status === 401) {
+        throw new Error('OpenAI API authentication failed');
+      }
+      throw new Error(`Report generation failed: ${error.message}`);
     }
   }
 }

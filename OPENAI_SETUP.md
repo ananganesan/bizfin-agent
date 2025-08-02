@@ -1,67 +1,67 @@
-# 🔄 OpenAI Setup - Changed from Claude to GPT-4!
+# 🤖 OpenAI API Setup Required
 
-## ✅ What's Changed
-- **AI Engine**: Now using OpenAI GPT-4 instead of Claude
-- **API Key**: Changed from `ANTHROPIC_API_KEY` to `OPENAI_API_KEY`
-- **Model**: Using `gpt-4-turbo-preview` for best performance
+## ⚠️ Critical: Production OpenAI API Key Missing
 
-## 🔑 Get Your OpenAI API Key
+The analysis functionality is currently failing because the OpenAI API key is not configured in production.
 
-1. Go to: https://platform.openai.com/api-keys
-2. Sign up or login
-3. Create new API key
-4. Copy the key (starts with `sk-`)
+## 🔧 Fix Required:
 
-## 📋 Update These Places:
+### 1. Get OpenAI API Key
+1. Go to [OpenAI API Keys](https://platform.openai.com/api-keys)
+2. Create a new API key
+3. Copy the key (starts with `sk-`)
 
-### 1. Local Development
-Edit `backend/.env`:
-```
-OPENAI_API_KEY=sk-your-actual-openai-key-here
-```
+### 2. Update Production Environment
+On your server, update the environment file:
 
-### 2. Production Server
-After deployment, edit `/var/www/bizfin-agent/backend/.env`:
-```
-OPENAI_API_KEY=sk-your-actual-openai-key-here
-```
-
-### 3. GitHub Actions CI/CD
-Go to: https://github.com/ananganesan/bizfin-agent/settings/secrets/actions
-
-Update/Add secret:
-```
-Name: OPENAI_API_KEY
-Value: sk-your-actual-openai-key-here
-```
-
-## 💰 OpenAI Pricing
-- GPT-4 Turbo: ~$0.01 per 1K input tokens, $0.03 per 1K output tokens
-- Each financial analysis: ~$0.05-0.10
-- Reports: ~$0.20-0.40
-
-## 🚀 Deploy Command (Same as Before)
 ```bash
-ssh root@37.27.216.55 "cd /var/www/bizfin-agent && git pull && pm2 restart bizfin-agent"
+# SSH to your server
+ssh root@49.207.59.52
+
+# Edit the production environment file
+nano /var/www/bizfin-agent/backend/.env.production
+
+# Replace this line:
+OPENAI_API_KEY=your_production_openai_api_key_here
+
+# With your actual key:
+OPENAI_API_KEY=sk-your-actual-openai-api-key-here
 ```
 
-Or for fresh deployment:
+### 3. Restart the Application
 ```bash
-ssh root@37.27.216.55 "git clone https://github.com/ananganesan/bizfin-agent.git /var/www/bizfin-agent && cd /var/www/bizfin-agent && ./deploy-to-hetzner.sh"
+# Restart the backend to load new environment variables
+pm2 restart bizfin-backend
+
+# Check if it's running properly
+pm2 status
+pm2 logs bizfin-backend
 ```
 
-## 🧪 Test the AI
-After adding your OpenAI key:
-1. Login as any demo user
-2. Upload `sample-data.csv`
-3. Ask: "What are the key financial insights?"
-4. You should get GPT-4 powered analysis!
+## 🔄 Alternative: Update via GitHub Secrets (Recommended)
 
-## 🎯 Benefits of GPT-4
-- ✅ Widely available API
-- ✅ Great financial analysis capabilities
-- ✅ Fast response times
-- ✅ Reliable uptime
-- ✅ Extensive documentation
+1. Go to your GitHub repository: https://github.com/ananganesan/bizfin-agent
+2. Go to Settings → Secrets and variables → Actions
+3. Add a new secret:
+   - Name: `OPENAI_API_KEY`
+   - Value: Your OpenAI API key (sk-...)
+4. Push any change to trigger auto-deployment
 
-Your Finance Advisory Agent now runs on OpenAI GPT-4! 🎉
+## ✅ Verification
+
+Test the fix by:
+1. Visit https://bizfin.texra.in
+2. Login with demo credentials
+3. Upload a CSV file
+4. Ask a question about the data
+
+## 🎯 Current Error:
+- **Status**: 500 Internal Server Error
+- **Endpoint**: `/api/analysis/query`
+- **Cause**: Missing or invalid OpenAI API key
+- **Solution**: Set valid OPENAI_API_KEY in production environment
+
+## 💰 OpenAI API Costs
+- Using `gpt-4o-mini` model (cost-effective)
+- Estimated cost: ~$0.01-0.10 per analysis query
+- Monitor usage at [OpenAI Usage Dashboard](https://platform.openai.com/usage)
