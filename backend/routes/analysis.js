@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const claudeAI = require('../services/claude-ai');
+const openAI = require('../services/openai-service');
 const { authenticateToken, checkRole } = require('../middleware/auth');
 
 // Analyze financial query
@@ -12,7 +12,7 @@ router.post('/query', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Query and user role are required' });
     }
 
-    const analysis = await claudeAI.analyzeFinancials(financialData, userRole, query);
+    const analysis = await openAI.analyzeFinancials(financialData, userRole, query);
     
     res.json({
       success: true,
@@ -29,7 +29,7 @@ router.post('/report', authenticateToken, async (req, res) => {
   try {
     const { financialData, userRole } = req.body;
     
-    const report = await claudeAI.generateReport(financialData, userRole);
+    const report = await openAI.generateReport(financialData, userRole);
     
     res.json({
       success: true,

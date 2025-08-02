@@ -1,12 +1,12 @@
 # Business Finance Advisory Agent
 
-A role-based AI financial advisor powered by Claude AI that provides intelligent financial analysis and recommendations based on user roles (Junior Staff, Intermediate Staff, Departmental Head).
+A role-based AI financial advisor powered by OpenAI GPT-4 that provides intelligent financial analysis and recommendations based on user roles (Junior Staff, Intermediate Staff, Departmental Head).
 
 ## Features
 
 - **Role-Based Access Control**: Different capabilities based on user role
 - **File Upload Support**: Upload Excel, CSV, and PDF financial documents
-- **AI-Powered Analysis**: Claude AI provides contextual financial insights
+- **AI-Powered Analysis**: OpenAI GPT-4 provides contextual financial insights
 - **Interactive Chat Interface**: Ask questions about your financial data
 - **Report Generation**: Generate comprehensive financial reports
 - **Real-time Analysis**: Instant responses and recommendations
@@ -39,7 +39,7 @@ npm run install-deps
 
 2. Set up environment variables:
    - Copy `backend/.env.example` to `backend/.env`
-   - Add your Anthropic API key to `ANTHROPIC_API_KEY`
+   - Add your OpenAI API key to `OPENAI_API_KEY`
    - Configure other settings as needed
 
 3. Start the application:
@@ -74,7 +74,7 @@ npm run start-frontend
 
 ## Technologies Used
 
-- **Backend**: Node.js, Express, Anthropic AI
+- **Backend**: Node.js, Express, OpenAI GPT-4
 - **Frontend**: Vanilla JavaScript, HTML5, CSS3
 - **File Processing**: XLSX library for Excel files
 - **Authentication**: JWT tokens

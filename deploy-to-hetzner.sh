@@ -126,13 +126,13 @@ if [ ! -f "backend/.env" ]; then
     cat > backend/.env << EOF
 PORT=3005
 NODE_ENV=production
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
 JWT_SECRET=$(openssl rand -base64 32)
 UPLOAD_DIR=./uploads
 MAX_FILE_SIZE=10485760
 CORS_ORIGIN=https://bizfin.texra.in
 EOF
-    echo -e "${YELLOW}⚠️  Created backend/.env - Please add your ANTHROPIC_API_KEY${NC}"
+    echo -e "${YELLOW}⚠️  Created backend/.env - Please add your OPENAI_API_KEY${NC}"
 else
     echo "Using existing .env file"
 fi
@@ -303,7 +303,7 @@ echo "   Restart: pm2 restart $APP_NAME"
 echo "   Status: pm2 status"
 echo ""
 echo -e "${YELLOW}⚠️  Don't forget to:${NC}"
-echo "1. Add your ANTHROPIC_API_KEY to backend/.env"
+echo "1. Add your OPENAI_API_KEY to backend/.env"
 echo "2. Update the repository URL in this script"
 echo "3. Test all features"
 echo ""
