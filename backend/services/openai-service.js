@@ -1,4 +1,5 @@
 const OpenAI = require('openai');
+const loggingService = require('./logging-service');
 
 class OpenAIService {
   constructor() {
@@ -58,6 +59,17 @@ User Query: ${query}
 Please provide analysis appropriate for a ${userRole} level user. Include specific insights, recommendations, and actionable next steps based on the role's capabilities.`;
 
     try {
+      // Log the request
+      loggingService.logOpenAI('request', {
+        model: 'gpt-4o-mini',
+        userRole,
+        query,
+        dataLength: dataContent.length,
+        hasRagContext: !!ragContext,
+        systemPromptLength: systemPrompt.length
+      });
+
+      const startTime = Date.now();
       const response = await this.client.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
@@ -75,6 +87,16 @@ Please provide analysis appropriate for a ${userRole} level user. Include specif
       });
 
       const content = response.choices[0].message.content;
+      
+      // Log the response
+      loggingService.logOpenAI('response', {
+        responseTime: Date.now() - startTime,
+        tokensUsed: response.usage?.total_tokens || 0,
+        promptTokens: response.usage?.prompt_tokens || 0,
+        completionTokens: response.usage?.completion_tokens || 0,
+        contentLength: content.length,
+        model: response.model
+      });
 
       return {
         content: content,

@@ -1,5 +1,6 @@
 const { Pinecone } = require('@pinecone-database/pinecone');
 const OpenAI = require('openai');
+const loggingService = require('./logging-service');
 
 class VectorService {
   constructor() {
@@ -68,13 +69,27 @@ class VectorService {
   // Generate embeddings for text
   async generateEmbedding(text) {
     try {
+      loggingService.logVector('embedding_request', {
+        textLength: text.length,
+        model: 'text-embedding-3-small'
+      });
+
+      const startTime = Date.now();
       const response = await this.openai.embeddings.create({
         model: 'text-embedding-3-small',
         input: text
       });
       
+      loggingService.logVector('embedding_response', {
+        responseTime: Date.now() - startTime,
+        dimensions: response.data[0].embedding.length
+      });
+
       return response.data[0].embedding;
     } catch (error) {
+      loggingService.logVector('embedding_error', {
+        error: error.message
+      });
       console.error('Failed to generate embedding:', error);
       throw error;
     }

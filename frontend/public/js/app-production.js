@@ -44,6 +44,12 @@ window.addEventListener('load', async () => {
 function updateUI() {
     document.getElementById('username').textContent = currentUser.username;
     document.getElementById('userRole').textContent = currentUser.role;
+    
+    // Show developer console link for department heads
+    if (currentUser.role === 'Departmental Head') {
+        document.getElementById('devConsoleLink').style.display = 'inline';
+    }
+    
     updateToolsList();
 }
 
