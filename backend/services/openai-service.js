@@ -37,8 +37,16 @@ class OpenAIService {
     }
     
     if (data && data.type === 'pdf') {
-      // For PDF content, use the extracted text directly
-      dataContent = `Document Type: PDF (${data.pages} pages)\nContent:\n${data.content}`;
+      // For PDF content, truncate if too large to prevent token overflow
+      let pdfContent = data.content || '';
+      const maxChars = 50000; // Roughly 12k-15k tokens
+      
+      if (pdfContent.length > maxChars) {
+        pdfContent = pdfContent.substring(0, maxChars) + '\n\n[Content truncated due to size...]';
+        console.log(`PDF content truncated from ${data.content.length} to ${maxChars} characters`);
+      }
+      
+      dataContent = `Document Type: PDF (${data.pages} pages)\nContent:\n${pdfContent}`;
     } else if (data) {
       // For structured data (Excel/CSV), stringify it
       dataContent = JSON.stringify(data, null, 2);
