@@ -1,5 +1,5 @@
 // Developer Console JavaScript
-const API_URL = window.location.protocol + '//' + window.location.hostname + ':3005/api';
+const API_URL = window.location.protocol + '//' + window.location.hostname + '/api';
 let eventSource = null;
 let logs = [];
 
