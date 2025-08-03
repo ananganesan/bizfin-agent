@@ -18,10 +18,40 @@ class OpenAIService {
 
     const systemPrompt = rolePrompts[userRole] || rolePrompts['Junior Staff'];
     
+    // Handle different data formats
+    let dataContent = '';
+    let ragContext = '';
+    
+    // Check if we have RAG-enhanced data
+    if (data && data.relevantContext) {
+      // Extract the most relevant context from RAG
+      ragContext = '\n\nRelevant Context from Document:\n';
+      data.relevantContext.forEach((chunk, index) => {
+        ragContext += `\n[Context ${index + 1} - Relevance Score: ${chunk.score.toFixed(3)}]\n${chunk.text}\n`;
+      });
+      
+      // Remove relevantContext from data to avoid duplication
+      const { relevantContext, ...remainingData } = data;
+      data = remainingData;
+    }
+    
+    if (data && data.type === 'pdf') {
+      // For PDF content, use the extracted text directly
+      dataContent = `Document Type: PDF (${data.pages} pages)\nContent:\n${data.content}`;
+    } else if (data) {
+      // For structured data (Excel/CSV), stringify it
+      dataContent = JSON.stringify(data, null, 2);
+    } else {
+      dataContent = 'No financial data provided';
+    }
+    
+    // Combine main data with RAG context
+    dataContent += ragContext;
+
     const userPrompt = `${systemPrompt}
 
 Financial Data Context:
-${JSON.stringify(data, null, 2)}
+${dataContent}
 
 User Query: ${query}
 
@@ -37,7 +67,7 @@ Please provide analysis appropriate for a ${userRole} level user. Include specif
           },
           {
             role: 'user',
-            content: `Financial Data: ${JSON.stringify(data, null, 2)}\n\nQuery: ${query}`
+            content: `Financial Data: ${dataContent}\n\nQuery: ${query}`
           }
         ],
         temperature: 0.7,

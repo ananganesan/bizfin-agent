@@ -181,7 +181,8 @@ async function sendQuery(query) {
         });
         
         if (!response.ok) {
-            throw new Error('Analysis failed');
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Analysis failed');
         }
         
         const result = await response.json();
@@ -191,7 +192,7 @@ async function sendQuery(query) {
         
     } catch (error) {
         console.error('Query error:', error);
-        addMessage('system', 'Failed to analyze query. Please try again.');
+        addMessage('system', error.message || 'Failed to analyze query. Please try again.');
     }
 }
 

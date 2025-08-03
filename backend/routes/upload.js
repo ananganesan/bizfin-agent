@@ -4,6 +4,8 @@ const multer = require('multer');
 const xlsx = require('xlsx');
 const path = require('path');
 const fs = require('fs');
+const pdfParse = require('pdf-parse');
+const vectorService = require('../services/vector-service');
 
 const storage = multer.diskStorage({
   destination: './uploads',
@@ -45,6 +47,49 @@ router.post('/financial-data', upload.single('file'), async (req, res) => {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       financialData = xlsx.utils.sheet_to_json(worksheet);
+    } else if (fileExtension === '.pdf') {
+      // Extract text content from PDF
+      const dataBuffer = fs.readFileSync(filePath);
+      const pdfData = await pdfParse(dataBuffer);
+      
+      // Store PDF content as structured data
+      financialData = {
+        type: 'pdf',
+        content: pdfData.text,
+        pages: pdfData.numpages,
+        info: pdfData.info
+      };
+    }
+    
+    // Store in vector database for RAG
+    try {
+      let contentToStore = '';
+      let documentType = 'financial';
+      
+      if (fileExtension === '.pdf') {
+        contentToStore = financialData.content;
+        documentType = 'pdf';
+      } else {
+        // For Excel/CSV, convert to readable text format
+        contentToStore = JSON.stringify(financialData, null, 2);
+        documentType = 'spreadsheet';
+      }
+      
+      if (contentToStore) {
+        const documentId = `${Date.now()}_${req.file.originalname}`;
+        await vectorService.storeDocument(documentId, contentToStore, {
+          filename: req.file.originalname,
+          uploadedAt: new Date().toISOString(),
+          fileType: fileExtension,
+          documentType: documentType
+        });
+        
+        // Add document ID to the response
+        financialData.vectorDocumentId = documentId;
+      }
+    } catch (vectorError) {
+      console.error('Vector storage error:', vectorError);
+      // Continue without vector storage - don't fail the upload
     }
     
     // Clean up uploaded file
