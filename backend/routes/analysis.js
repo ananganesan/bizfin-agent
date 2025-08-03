@@ -9,6 +9,13 @@ router.post('/query', authenticateToken, async (req, res) => {
   try {
     const { query, financialData, userRole } = req.body;
     
+    // Add console logging for debugging
+    console.log('=== ANALYSIS QUERY ===');
+    console.log('Query:', query);
+    console.log('User Role:', userRole);
+    console.log('Financial Data type:', financialData?.type || 'unknown');
+    console.log('Financial Data length:', JSON.stringify(financialData || {}).length);
+    
     if (!query || !userRole) {
       return res.status(400).json({ error: 'Query and user role are required' });
     }
